@@ -113,8 +113,9 @@ class AppValidators {
   }
 
   static String? phone(String? value) {
-    if (value == null || value.trim().isEmpty)
+    if (value == null || value.trim().isEmpty) {
       return 'Phone number is required';
+    }
     final regex = RegExp(r'^\+?[0-9]{9,13}$');
     if (!regex.hasMatch(value.trim())) return 'Enter a valid phone number';
     return null;

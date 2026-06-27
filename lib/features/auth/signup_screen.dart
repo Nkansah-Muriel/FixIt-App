@@ -1,6 +1,8 @@
-import 'package:fitit_app/core/constants.dart';
+// import 'package:fitit_app/core/constants.dart';
 import 'package:fitit_app/core/extensions.dart';
 import 'package:fitit_app/core/theme.dart';
+import 'package:fitit_app/features/auth/opt_screen.dart';
+import 'package:fitit_app/shared/widgets/custom_textformfield.dart';
 import 'package:flutter/material.dart';
 
 class SignupScreen extends StatefulWidget {
@@ -11,154 +13,226 @@ class SignupScreen extends StatefulWidget {
 }
 
 class _SignupScreenState extends State<SignupScreen> {
-  bool _obscurePassword = true;
-  bool isChecked = false;
+  final _formkey = GlobalKey<FormState>();
+  bool _isChecked = false;
+  final TextEditingController _fullNameController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _phoneContactController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  @override
+  void dispose() {
+    _fullNameController.dispose();
+    _emailController.dispose();
+    _phoneContactController.dispose();
+    _passwordController.dispose();
+    super.dispose();
+  }
+
+  bool _isLoading = false;
+
+  Future<void> _handleSignUp() async {
+    if (!_formkey.currentState!.validate()) return;
+    if (!_isChecked) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text(
+            "Please accept the Terms of Service and Privacy Policy",
+          ),
+          behavior: SnackBarBehavior.floating,
+        ),
+      );
+      return;
+    }
+    setState(() {
+      _isLoading = true;
+    });
+    //firebase auth goes hee
+    await Future.delayed(const Duration(seconds: 2));
+
+    if (!mounted) return;
+    setState(() {
+      _isLoading = false;
+
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) =>
+              OptScreen(phoneNumber: _phoneContactController.text),
+        ),
+      );
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     var textTheme = Theme.of(context).textTheme;
     return SafeArea(
       child: Scaffold(
-        body: Padding(
-          padding: EdgeInsets.symmetric(
-            horizontal: context.horizontalPadding,
-            vertical: context.verticalPadding,
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              50.vSpace,
-              Center(
-                child: Text(
-                  "Create your account",
-                  style: textTheme.headlineLarge,
-                ),
+        body: Stack(
+          children: [
+            Padding(
+              padding: EdgeInsets.symmetric(
+                horizontal: context.horizontalPadding,
+                vertical: context.verticalPadding,
               ),
-              8.vSpace,
-              Center(
-                child: Text(
-                  "Join us and start your journey!",
-                  style: textTheme.bodyMedium!.copyWith(
-                    color: AppColors.lightTextSub,
-                  ),
-                ),
-              ),
-              24.vSpace,
-              Text("FULL NAME", style: textTheme.labelMedium),
-              8.vSpace,
-              TextFormField(
-                decoration: InputDecoration(
-                  hintText: "Enter your full name",
-                  prefixIcon: Icon(
-                    Icons.person,
-                    size: AppSizes.iconMd,
-                    color: AppColors.lightTextSub,
-                  ),
-                ),
-              ),
-              24.vSpace,
-              Text("EMAIL", style: textTheme.labelMedium),
-              8.vSpace,
-              TextFormField(
-                decoration: InputDecoration(
-                  hintText: "Enter your email",
-                  prefixIcon: Icon(
-                    Icons.email,
-                    size: AppSizes.iconMd,
-                    color: AppColors.lightTextSub,
-                  ),
-                ),
-              ),
-              24.vSpace,
-              Text("PHONE NUMBER", style: textTheme.labelMedium),
-              8.vSpace,
-              TextFormField(
-                decoration: InputDecoration(
-                  hintText: "Enter your phone number",
-                  prefixIcon: Icon(
-                    Icons.phone,
-                    size: AppSizes.iconMd,
-                    color: AppColors.lightTextSub,
-                  ),
-                ),
-              ),
-              24.vSpace,
-              Text("PASSWORD", style: textTheme.labelMedium),
-              8.vSpace,
-              TextFormField(
-                obscureText: _obscurePassword,
-                obscuringCharacter: '*',
-                decoration: InputDecoration(
-                  hintText: "Enter your password",
-                  prefixIcon: Icon(
-                    Icons.lock,
-                    size: AppSizes.iconMd,
-                    color: AppColors.lightTextSub,
-                  ),
-                  suffixIcon: IconButton(
-                    icon: Icon(
-                      _obscurePassword
-                          ? Icons.visibility
-                          : Icons.visibility_off,
-                      size: AppSizes.iconMd,
-                      color: AppColors.lightTextSub,
-                    ),
-                    onPressed: () {
-                      setState(() {
-                        _obscurePassword = !_obscurePassword;
-                      });
-                    },
-                  ),
-                ),
-              ),
-              8.vSpace,
-              Row(
-                children: [
-                  Checkbox(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(6.0),
-                    ),
+              child: Form(
+                key: _formkey,
+                child: SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      context
+                          .h(0.06)
+                          .vSpace, //6% of the screen height from the top
+                      Center(
+                        child: Text(
+                          "Create your account",
+                          style: textTheme.headlineLarge,
+                        ),
+                      ),
+                      8.vSpace,
+                      Center(
+                        child: Text(
+                          "Join us and start your journey!",
+                          style: textTheme.bodyMedium!.copyWith(
+                            color: AppColors.lightTextSub,
+                          ),
+                        ),
+                      ),
+                      24.vSpace,
+                      Text("FULL NAME", style: textTheme.labelMedium),
+                      8.vSpace,
+                      CustomTextFormField(
+                        controller: _fullNameController,
+                        hint: "Enter your full name",
+                        prefixIcon: Icons.person,
+                        validator: AppValidators.fullName,
+                        textInputAction: TextInputAction.next,
+                        keyboardType: TextInputType.text,
+                      ),
+                      24.vSpace,
+                      Text("EMAIL", style: textTheme.labelMedium),
+                      8.vSpace,
+                      CustomTextFormField(
+                        hint: "Enter your email",
+                        prefixIcon: Icons.email,
+                        controller: _emailController,
+                        validator: AppValidators.email,
+                        textInputAction: TextInputAction.next,
+                        keyboardType: TextInputType.emailAddress,
+                      ),
+                      24.vSpace,
+                      Text("PHONE NUMBER", style: textTheme.labelMedium),
+                      8.vSpace,
+                      CustomTextFormField(
+                        hint: "Enter your phone number",
+                        controller: _phoneContactController,
+                        prefixIcon: Icons.phone,
+                        validator: AppValidators.phone,
+                        textInputAction: TextInputAction.next,
+                        keyboardType: TextInputType.phone,
+                      ),
+                      24.vSpace,
+                      Text("PASSWORD", style: textTheme.labelMedium),
+                      8.vSpace,
+                      CustomTextFormField(
+                        hint: "Enter your password",
+                        controller: _passwordController,
+                        prefixIcon: Icons.lock,
+                        isPassword: true,
+                        validator: AppValidators.password,
+                        textInputAction: TextInputAction.done,
+                        keyboardType: TextInputType.text,
+                      ),
+                      8.vSpace,
+                      Row(
+                        children: [
+                          Checkbox(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(6.0),
+                            ),
 
-                    value: isChecked,
-                    onChanged: (value) {
-                      setState(() {
-                        isChecked = value!;
-                      });
-                    },
-                  ),
-                  Expanded(
-                    child: Text(
-                      "I agree to the Terms of Service and Privacy Policy",
-                      style: textTheme.bodyMedium!.copyWith(
-                        color: AppColors.lightTextSub,
+                            value: _isChecked,
+                            onChanged: (value) {
+                              setState(() {
+                                _isChecked = value!;
+                              });
+                            },
+                          ),
+                          Expanded(
+                            child: RichText(
+                              text: TextSpan(
+                                style: textTheme.bodyMedium?.copyWith(
+                                  color: AppColors.lightTextSub,
+                                ),
+                                children: const [
+                                  TextSpan(text: "I agree to the "),
+                                  TextSpan(
+                                    text: "Terms of Service",
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      color: AppColors.primary,
+                                    ),
+                                  ),
+                                  TextSpan(text: " and "),
+                                  TextSpan(
+                                    text: "Privacy Policy",
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      color: AppColors.primary,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
-                    ),
-                  ),
-                ],
-              ),
-              50.vSpace,
-              ElevatedButton(onPressed: () {}, child: Text("Sign Up")),
-              16.vSpace,
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text("Already have an account?", style: textTheme.bodyMedium),
-                  TextButton(
-                    onPressed: () => Navigator.pushReplacementNamed(
-                      context,
-                      "/signin_screen",
-                    ),
-                    child: Text(
-                      "Login",
-                      style: textTheme.bodyMedium!.copyWith(
-                        color: AppColors.primary,
-                        fontWeight: FontWeight.bold,
+                      50.vSpace,
+                      ElevatedButton(
+                        onPressed: () {
+                          _isLoading ? null : _handleSignUp();
+                        },
+                        child: Text("Sign Up"),
                       ),
-                    ),
+                      16.vSpace,
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            "Already have an account?",
+                            style: textTheme.bodyMedium,
+                          ),
+                          TextButton(
+                            onPressed: () => Navigator.pushReplacementNamed(
+                              context,
+                              "/signin_screen",
+                            ),
+                            child: Text(
+                              "Login",
+                              style: textTheme.bodyMedium!.copyWith(
+                                color: AppColors.primary,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+
+                      //loading overlay
+                    ],
                   ),
-                ],
+                ),
               ),
-            ],
-          ),
+            ),
+            if (_isLoading)
+              Container(
+                color: Colors.black.withValues(alpha: 102),
+                child: Center(
+                  child: CircularProgressIndicator(color: AppColors.primary),
+                ),
+              ),
+          ],
         ),
       ),
     );

@@ -17,7 +17,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   int _currentPage = 0;
   @override
   Widget build(BuildContext context) {
-    var textTheme = Theme.of(context).textTheme;
+    // var textTheme = Theme.of(context).textTheme;
     return SafeArea(
       child: Scaffold(
         body: Column(

@@ -1,3 +1,4 @@
+import 'package:fitit_app/core/constants.dart';
 import 'package:flutter/material.dart';
 
 // Colors
@@ -233,7 +234,9 @@ class AppTheme {
         backgroundColor: AppColors.primary,
         foregroundColor: Colors.white,
         minimumSize: const Size(double.infinity, 52),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(AppSizes.radiusMd),
+        ),
         textStyle: const TextStyle(
           fontFamily: 'Inter',
           fontSize: 15,

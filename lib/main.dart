@@ -1,3 +1,5 @@
+import 'package:fitit_app/features/auth/opt_screen.dart';
+import 'package:fitit_app/features/home/screens/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'core/theme.dart';
 import 'features/auth/signup_screen.dart';
@@ -26,6 +28,8 @@ class MyApp extends StatelessWidget {
         '/onboarding_screen': (context) => const OnboardingScreen(),
         '/signup_screen': (context) => const SignupScreen(),
         '/signin_screen': (context) => const SigninScreen(),
+        '/home_screen': (context) => const HomeScreen(),
+        // '/opt_screen': (context) => OptScreen(phoneNumber: ""),
       },
     );
   }
