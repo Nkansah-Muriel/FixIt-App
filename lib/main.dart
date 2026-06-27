@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'core/theme.dart';
+import 'features/auth/signup_screen.dart';
+import 'features/auth/signin_screen.dart';
 import 'features/onboarding/onboarding_screen.dart';
 import 'features/onboarding/splash_screen.dart';
 
@@ -20,7 +22,11 @@ class MyApp extends StatelessWidget {
       darkTheme: AppTheme.dark,
       themeMode: ThemeMode.system, // Use system theme mode
       home: SplashScreen(),
-      routes: {'/onboarding_screen': (context) => const OnboardingScreen()},
+      routes: {
+        '/onboarding_screen': (context) => const OnboardingScreen(),
+        '/signup_screen': (context) => const SignupScreen(),
+        '/signin_screen': (context) => const SigninScreen(),
+      },
     );
   }
 }
