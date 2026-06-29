@@ -423,6 +423,7 @@ class _ProviderCard extends StatelessWidget {
             child: ElevatedButton(
               onPressed: () {
                 // TODO: navigate to provider detail
+                Navigator.pushNamed(context, "/provider_details_screen");
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: AppColors.accent,

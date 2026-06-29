@@ -1,6 +1,7 @@
 import 'package:fitit_app/features/auth/signin_screen.dart';
 import 'package:fitit_app/features/auth/signup_screen.dart';
 import 'package:fitit_app/features/home/screens/home_screen.dart';
+import 'package:fitit_app/features/home/screens/provider_details_screen.dart';
 import 'package:fitit_app/features/onboarding/onboarding_screen.dart';
 import 'package:fitit_app/features/onboarding/splash_screen.dart';
 import 'package:flutter/material.dart';
@@ -18,6 +19,7 @@ class AppRoutes {
   static const signin = '/signin_screen';
   static const home = '/home_screen';
   static const category = '/category_screen';
+  static const providerDetails = '/provider_details_screen';
 
   // ── Route map ──────────────────────────────────────────────────
   static Map<String, WidgetBuilder> get routes => {
@@ -26,6 +28,7 @@ class AppRoutes {
     signup: (_) => const SignupScreen(),
     signin: (_) => const SigninScreen(),
     home: (_) => const HomeScreen(),
+    providerDetails: (_) => const ProviderDetailsScreen(),
   };
 
   // ── Routes that need arguments go here ─────────────────────────
