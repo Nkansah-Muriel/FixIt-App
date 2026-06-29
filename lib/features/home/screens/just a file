@@ -1,0 +1,42 @@
+// List of your categories
+final List<Category> categories = [
+  Category('Cleaning', Icons.cleaning_services),
+  Category('Plumbing', Icons.plumbing),
+  Category('Electrical', Icons.electric_bolt),
+  Category('Painting', Icons.format_paint),
+  Category('AC Repair', Icons.ac_unit),
+  Category('Pest Control', Icons.bug_report),
+  Category('Carpentry', Icons.carpenter),
+  Category('More', Icons.more_horiz),
+];
+
+// Inside your Column children:
+GridView.builder(
+  shrinkWrap: true, // Crucial: allows GridView to exist inside a Column
+  physics: const NeverScrollableScrollPhysics(), // Disables scrolling for the grid
+  itemCount: categories.length,
+  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+    crossAxisCount: 4, // 4 items per row as per your design
+    crossAxisSpacing: 12,
+    mainAxisSpacing: 12,
+  ),
+  itemBuilder: (context, index) {
+    return Column(
+      children: [
+        Container(
+          padding: const EdgeInsets.all(12),
+          decoration: BoxDecoration(
+            color: Colors.blue.withOpacity(0.1), // Light background
+            borderRadius: BorderRadius.circular(12),
+          ),
+          child: Icon(categories[index].icon, color: AppColors.primary),
+        ),
+        const SizedBox(height: 8),
+        Text(
+          categories[index].name,
+          style: const TextStyle(fontSize: 12),
+        ),
+      ],
+    );
+  },
+),
