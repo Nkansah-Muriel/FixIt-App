@@ -1,22 +1,42 @@
 import 'package:fitit_app/core/constants.dart';
 import 'package:fitit_app/core/extensions.dart';
 import 'package:fitit_app/core/theme.dart';
+import 'package:fitit_app/shared/models/reviews_model.dart';
+import 'package:fitit_app/shared/models/service_item_model.dart';
+import 'package:fitit_app/shared/widgets/review_card.dart';
 import 'package:flutter/material.dart';
 
 class ProviderDetailsScreen extends StatelessWidget {
   const ProviderDetailsScreen({super.key});
 
+  static const List<ServiceItem> services = [
+    ServiceItem(name: "Leak Detection & Repair", price: 50.0),
+    ServiceItem(name: "Drain Cleaning", price: 75.0),
+    ServiceItem(name: "Emergency Repairs", price: 100.0),
+  ];
+
+  static List<ReviewModel> reviews = [
+    ReviewModel(
+      name: 'Esi Amoah',
+      initials: 'EA',
+      avatarColor: Color.fromRGBO(173, 216, 230, 1),
+      rating: 5,
+      comment: 'Fixed our kitchen leak in 30 min. Super professional!',
+      date: 'Jun 12',
+    ),
+  ];
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
     return SafeArea(
       child: Scaffold(
         body: Column(
+          //header stack (blue + white + avatar)
           children: [
             Stack(
               clipBehavior: Clip.none,
               children: [
-                //blue container
+                //blue section
                 Column(
                   children: [
                     Container(
@@ -87,7 +107,7 @@ class ProviderDetailsScreen extends StatelessWidget {
                         ],
                       ),
                     ),
-                    //white container
+                    //white stats section
                     Container(
                       padding: EdgeInsets.symmetric(
                         horizontal: context.horizontalPadding,
@@ -113,50 +133,30 @@ class ProviderDetailsScreen extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         crossAxisAlignment: CrossAxisAlignment.end,
                         children: [
-                          Column(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: [
-                              Text(
-                                "4.9",
-                                style: textTheme.bodyLarge!.copyWith(
-                                  color: AppColors.accent,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                              Text("Rating", style: textTheme.bodySmall),
-                            ],
+                          _StatColumn(
+                            value: "4.8",
+                            label: "Rating",
+                            color: AppColors.accent,
+                            textTheme: textTheme,
                           ),
-                          Column(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: [
-                              Text(
-                                "312",
-                                style: textTheme.bodyLarge!.copyWith(
-                                  color: AppColors.primary,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                              Text("Reviews", style: textTheme.bodySmall),
-                            ],
+                          _StatColumn(
+                            value: "312",
+                            label: "Reviews",
+                            color: AppColors.primary,
+                            textTheme: textTheme,
                           ),
-                          Column(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: [
-                              Text(
-                                "98%",
-                                style: textTheme.bodyLarge!.copyWith(
-                                  color: AppColors.success,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                              Text("On time", style: textTheme.bodySmall),
-                            ],
+                          _StatColumn(
+                            value: "98%",
+                            label: "On time",
+                            color: AppColors.success,
+                            textTheme: textTheme,
                           ),
                         ],
                       ),
                     ),
                   ],
                 ),
+                //floating avatar
                 Positioned(
                   top: context.h(
                     .20,
@@ -186,41 +186,190 @@ class ProviderDetailsScreen extends StatelessWidget {
               ],
             ),
             24.vSpace,
-            //about section
-            Padding(
-              padding: EdgeInsets.symmetric(
-                horizontal: context.horizontalPadding,
-                vertical: context.verticalPadding,
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    "About",
-                    style: textTheme.bodyLarge!.copyWith(
-                      fontWeight: FontWeight.bold,
+            //scrollable content section
+            Expanded(
+              child: SingleChildScrollView(
+                padding: EdgeInsets.symmetric(
+                  horizontal: context.horizontalPadding,
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // About
+                    Text('About', style: textTheme.titleLarge),
+                    12.vSpace,
+                    Text(
+                      'Licensed master plumber serving Greater Accra. '
+                      'Specializes in leak detection, drain cleaning, and '
+                      'emergency repairs. Fluent in English & Twi.',
+                      style: textTheme.bodyMedium,
                     ),
-                  ),
-                  12.vSpace,
-                  Text(
-                    "Licensed master plumber serving Greater Accra. Specializes in leak detection, drain cleaning, and emergency repairs. Fluent in English & Twi.",
-                    style: textTheme.bodyMedium,
-                  ),
-                  16.vSpace,
-                  Text(
-                    "Services & Pricing",
-                    style: textTheme.bodyLarge!.copyWith(
-                      fontWeight: FontWeight.bold,
+                    24.vSpace,
+
+                    // Services & Pricing
+                    Text('Services & Pricing', style: textTheme.titleLarge),
+                    12.vSpace,
+
+                    // ── Service list
+                    ListView.separated(
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemCount: services.length,
+                      separatorBuilder: (_, __) => const Divider(
+                        height: 1,
+                        color: AppColors.darkDivider,
+                      ),
+                      itemBuilder: (context, index) {
+                        final service = services[index];
+                        return ListTile(
+                          contentPadding: const EdgeInsets.symmetric(
+                            vertical: AppSizes.xs,
+                          ),
+                          title: Text(
+                            service.name,
+                            style: textTheme.bodyMedium,
+                          ),
+                          trailing: Text(
+                            service.price.toStringAsFixed(2),
+                            style: textTheme.titleMedium?.copyWith(
+                              color: AppColors.primary,
+                              fontWeight: FontWeight.w700,
+                            ),
+                          ),
+                        );
+                      },
                     ),
-                  ),
-                  //services and pricing
-                  ListTile(),
-                ],
+                    24.vSpace,
+                    //reviews section
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text("Reviews (312)", style: textTheme.titleLarge),
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.pushNamed(context, '/all_reviews_screen');
+                          },
+                          child: Text(
+                            'See all',
+                            style: textTheme.bodyMedium?.copyWith(
+                              color: AppColors.primary,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    12.vSpace,
+                    // ── Review list
+                    ReviewCard(review: reviews[0]),
+                    24.vSpace,
+                    // ── Sticky bottom bar ─────────────────────────────────────────
+                    Container(
+                      padding: EdgeInsets.symmetric(vertical: AppSizes.md),
+                      decoration: BoxDecoration(
+                        color: Theme.of(context).scaffoldBackgroundColor,
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.06),
+                            blurRadius: 10,
+                            offset: const Offset(0, -4),
+                          ),
+                        ],
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Text(
+                                'STARTS FROM',
+                                style: textTheme.labelSmall?.copyWith(
+                                  color: AppColors.lightTextSub,
+                                  letterSpacing: 1,
+                                ),
+                              ),
+                              4.vSpace,
+                              Row(
+                                children: [
+                                  Text(
+                                    '₵60',
+                                    style: textTheme.headlineLarge?.copyWith(
+                                      color: AppColors.primary,
+                                      fontWeight: FontWeight.w700,
+                                    ),
+                                  ),
+                                  Text(
+                                    '/hr',
+                                    style: textTheme.bodyMedium?.copyWith(
+                                      color: AppColors.lightTextSub,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                          SizedBox(
+                            width: context.w(0.35),
+                            height: AppSizes.buttonHeight,
+                            child: ElevatedButton(
+                              onPressed: () {},
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: AppColors.accent,
+                              ),
+                              child: Text(
+                                'Book Now',
+                                style: textTheme.bodyLarge?.copyWith(
+                                  fontWeight: FontWeight.bold,
+                                  color: AppColors.lightSurface,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
           ],
         ),
       ),
+    );
+  }
+}
+
+// ── Reusable stat column
+class _StatColumn extends StatelessWidget {
+  final String value;
+  final String label;
+  final Color color;
+  final TextTheme textTheme;
+
+  const _StatColumn({
+    required this.value,
+    required this.label,
+    required this.color,
+    required this.textTheme,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.end,
+      children: [
+        Text(
+          value,
+          style: textTheme.bodyLarge?.copyWith(
+            color: color,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        4.vSpace,
+        Text(label, style: textTheme.bodySmall),
+      ],
     );
   }
 }
