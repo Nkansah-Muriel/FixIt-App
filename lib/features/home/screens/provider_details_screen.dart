@@ -1,3 +1,4 @@
+import 'package:fitit_app/app/routes.dart';
 import 'package:fitit_app/core/constants.dart';
 import 'package:fitit_app/core/extensions.dart';
 import 'package:fitit_app/core/theme.dart';
@@ -314,17 +315,16 @@ class ProviderDetailsScreen extends StatelessWidget {
                             width: context.w(0.35),
                             height: AppSizes.buttonHeight,
                             child: ElevatedButton(
-                              onPressed: () {},
+                              onPressed: () {
+                                Navigator.pushNamed(
+                                  context,
+                                  AppRoutes.selectDateAndTime,
+                                );
+                              },
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: AppColors.accent,
                               ),
-                              child: Text(
-                                'Book Now',
-                                style: textTheme.bodyLarge?.copyWith(
-                                  fontWeight: FontWeight.bold,
-                                  color: AppColors.lightSurface,
-                                ),
-                              ),
+                              child: Text('Book Now'),
                             ),
                           ),
                         ],

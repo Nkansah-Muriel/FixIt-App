@@ -1,5 +1,5 @@
 import 'package:fitit_app/core/constants.dart';
-import 'package:fitit_app/core/theme.dart';
+// import 'package:fitit_app/core/theme.dart';
 import 'package:flutter/material.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
