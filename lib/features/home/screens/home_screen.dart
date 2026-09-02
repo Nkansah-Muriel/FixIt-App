@@ -351,94 +351,103 @@ class _ProviderCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
 
-    return Container(
-      width: 155,
-      padding: const EdgeInsets.all(AppSizes.md),
-      decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.surface,
-        borderRadius: BorderRadius.circular(AppSizes.radiusLg),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 0.06),
-            blurRadius: 12,
-            offset: const Offset(0, 4),
-          ),
-        ],
-      ),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          // Avatar
-          CircleAvatar(
-            radius: 32,
-            backgroundColor: provider.avatarColor,
-            child: Text(
-              provider.initials,
-              style: textTheme.titleLarge?.copyWith(
-                fontWeight: FontWeight.w700,
-                color: AppColors.lightTextMain,
-              ),
+    return GestureDetector(
+      onTap: () {
+        Navigator.pushNamed(context, "/provider_details_screen");
+      },
+      child: Container(
+        width: 155,
+        padding: const EdgeInsets.all(AppSizes.md),
+        decoration: BoxDecoration(
+          color: Theme.of(context).colorScheme.surface,
+          borderRadius: BorderRadius.circular(AppSizes.radiusLg),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withValues(alpha: 0.06),
+              blurRadius: 12,
+              offset: const Offset(0, 4),
             ),
-          ),
-          10.vSpace,
-
-          // Name
-          Text(
-            provider.name,
-            style: textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w600),
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-            textAlign: TextAlign.center,
-          ),
-          2.vSpace,
-
-          // Profession
-          Text(
-            provider.profession,
-            style: textTheme.bodySmall?.copyWith(color: AppColors.lightTextSub),
-          ),
-          8.vSpace,
-
-          // Rating
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const Icon(Icons.star_rounded, color: Colors.amber, size: 15),
-              4.hSpace,
-              Text(
-                "${provider.rating}  (${provider.reviews})",
-                style: textTheme.bodySmall?.copyWith(
+          ],
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            // Avatar
+            CircleAvatar(
+              radius: 32,
+              backgroundColor: provider.avatarColor,
+              child: Text(
+                provider.initials,
+                style: textTheme.titleLarge?.copyWith(
+                  fontWeight: FontWeight.w700,
                   color: AppColors.lightTextMain,
-                  fontWeight: FontWeight.w500,
                 ),
               ),
-            ],
-          ),
-          12.vSpace,
-
-          // Book Now button
-          SizedBox(
-            width: double.infinity,
-            height: 34,
-            child: ElevatedButton(
-              onPressed: () {
-                Navigator.pushNamed(context, "/provider_details_screen");
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: AppColors.accent,
-                padding: EdgeInsets.zero,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(AppSizes.radiusSm),
-                ),
-                textStyle: const TextStyle(
-                  fontSize: 13,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-              child: const Text('Book Now'),
             ),
-          ),
-        ],
+            10.vSpace,
+
+            // Name
+            Text(
+              provider.name,
+              style: textTheme.titleMedium?.copyWith(
+                fontWeight: FontWeight.w600,
+              ),
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              textAlign: TextAlign.center,
+            ),
+            2.vSpace,
+
+            // Profession
+            Text(
+              provider.profession,
+              style: textTheme.bodySmall?.copyWith(
+                color: AppColors.lightTextSub,
+              ),
+            ),
+            8.vSpace,
+
+            // Rating
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Icon(Icons.star_rounded, color: Colors.amber, size: 15),
+                4.hSpace,
+                Text(
+                  "${provider.rating}  (${provider.reviews})",
+                  style: textTheme.bodySmall?.copyWith(
+                    color: AppColors.lightTextMain,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+              ],
+            ),
+            12.vSpace,
+
+            // Book Now button
+            SizedBox(
+              width: double.infinity,
+              height: 34,
+              child: ElevatedButton(
+                onPressed: () {
+                  Navigator.pushNamed(context, "/provider_details_screen");
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: AppColors.accent,
+                  padding: EdgeInsets.zero,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(AppSizes.radiusSm),
+                  ),
+                  textStyle: const TextStyle(
+                    fontSize: 13,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+                child: const Text('Book Now'),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

@@ -4,18 +4,20 @@ class OrderSummaryModel {
   final String providerName;
   final String providerInitials;
   final Color providerAvatarColor;
-  final double providerRating;
+  final String providerRating;
   final String providerProfession;
   final String service;
-  final DateTime date;
+  final String date;
   final String time;
   final String address;
+  final String serviceDuration;
   final double serviceFee;
   final double platformFee;
   final String? promoCode;
   final double? discount;
 
-  const OrderSummaryModel({
+  const OrderSummaryModel(
+    this.serviceDuration, {
     required this.providerName,
     required this.providerInitials,
     required this.providerAvatarColor,

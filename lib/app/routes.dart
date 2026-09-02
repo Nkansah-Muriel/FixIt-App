@@ -1,6 +1,7 @@
 import 'package:fitit_app/features/auth/signin_screen.dart';
 import 'package:fitit_app/features/auth/signup_screen.dart';
 import 'package:fitit_app/features/booking/screens/order_summary_screen.dart';
+import 'package:fitit_app/features/booking/screens/payment_screen.dart';
 import 'package:fitit_app/features/booking/screens/service_address_screen.dart';
 import 'package:fitit_app/features/home/screens/all_reviews_screen.dart';
 import 'package:fitit_app/features/home/screens/home_screen.dart';
@@ -28,6 +29,7 @@ class AppRoutes {
   static const selectDateAndTime = '/select_date_and_time_screen';
   static const serviceAddress = '/service_address_screen';
   static const orderSummary = '/order_summary_screen';
+  static const payment = '/payment_screen';
 
   // ── Route map ──────────────────────────────────────────────────
   static Map<String, WidgetBuilder> get routes => {
@@ -40,7 +42,8 @@ class AppRoutes {
     allReviews: (_) => const AllReviewsScreen(),
     selectDateAndTime: (_) => const SelectDateAndTimeScreen(),
     serviceAddress: (_) => const ServiceAddressScreen(),
-    orderSummary: (_) => const OrderSummyScreen(),
+    orderSummary: (_) => const OrderSummaryScreen(),
+    payment: (_) => const PaymentScreen(),
   };
 
   // ── Routes that need arguments go here ─────────────────────────

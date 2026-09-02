@@ -29,7 +29,7 @@ class _SplashScreenState extends State<SplashScreen> {
 
     // move to next screen
     if (mounted) {
-      Navigator.pushReplacementNamed(context, '/home_screen');
+      Navigator.pushReplacementNamed(context, '/signup_screen');
     }
   }
 
